@@ -1,13 +1,14 @@
 const blogModel = require("../models/blogModel.js");
 const authorModel = require("../models/authorModel.js");
 const jwt = require("jsonwebtoken");
-const validator = require("../utils/validator");
+const validator = require("../validation/validator");
 
 // creating blog by authorizing authorId.
 const createBlog = async function (req, res) {
   try {
     const requestBody = req.body;
     const tokenId = req.authorId
+    console.log(tokenId);
     if (!validator.isValidRequestBody(requestBody)) {
       return res.status(400).send({
         status: false,
@@ -49,6 +50,8 @@ const createBlog = async function (req, res) {
         message: 'Unauthorised Access. Please login again!',
       });
     }
+
+
     const findAuthor = await authorModel.findById(authorId);
     if (!findAuthor) {
       return res
@@ -98,6 +101,7 @@ const createBlog = async function (req, res) {
 
 //get all blogs by using filters - title,tags,category & subcategory.
 const getBlog = async function (req, res) {
+  
   try {
     let filterQuery = { isDeleted: false, deletedAt: null, isPublished: true };
     let queryParams = req.query;
@@ -316,6 +320,7 @@ const deleteBlogById = async function (req, res) {
       return res.status(200).send({
         status: true,
         message: "successfully deleted blog",
+        data:Update
       });
     } else {
       return res

@@ -1,7 +1,6 @@
 const authorModel = require("../models/authorModel.js");
 const jwt = require("jsonwebtoken");
-const validator = require("../utils/validator");
-const secretKey = "Functionup-Uranium";
+const validator = require("../validation/validator");
 
 //Creating Author documents by validating the details.
 const createAuthor = async function (req, res) {
@@ -63,7 +62,7 @@ const createAuthor = async function (req, res) {
         .status(400)
         .send({ status: false, message: `Password is required` });
     }
-    const isEmailAlredyUsed = await authorModel.findOne({ email });
+    const isEmailAlredyUsed = await authorModel.findOne({ email:email });
     if (isEmailAlredyUsed) {
       return res
         .status(400)
@@ -141,7 +140,7 @@ const loginAuthor = async function (req, res) {
     }
 
     //creating JWT
-    let token = jwt.sign({ authorId: findAuthor._id }, secretKey);
+    let token = jwt.sign({ authorId: findAuthor._id }, process.env.SECRET_KEY);
     res.header("x-api-key", token);
     return res
       .status(201)

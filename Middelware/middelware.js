@@ -1,7 +1,10 @@
 const authorModel = require('../models/authorModel.js')
 const blogModel = require('../models/blogModel.js')
-const jwt = require('jsonwebtoken')
-const secretKey = "Functionup-Uranium"
+const jwt = require('jsonwebtoken');
+
+
+
+
 
 const loginCheck = async function(req, res, next) {
     try {
@@ -11,7 +14,7 @@ const loginCheck = async function(req, res, next) {
             return res.status(403).send({ status: false, message: `Missing authentication token in request` })
         }
 
-        let decoded = jwt.verify(token, secretKey)
+        let decoded = jwt.verify(token, process.env.SECRET_KEY);
 
         if (!decoded) {
             return res.status(403).send({ status: false, message: `Invalid authentication token in request` })
@@ -23,6 +26,7 @@ const loginCheck = async function(req, res, next) {
         res.status(500).send({ status: false, Error: "Provide Valid token"})
     }
 }
+
 
 module.exports = {
     loginCheck
