@@ -1,8 +1,5 @@
-const authorModel = require('../models/authorModel.js')
-const blogModel = require('../models/blogModel.js')
+
 const jwt = require('jsonwebtoken');
-
-
 
 
 
